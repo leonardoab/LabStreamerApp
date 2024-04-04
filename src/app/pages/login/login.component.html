@@ -1,0 +1,17 @@
+<div class="login-container">
+    <mat-form-field class="input-field">
+        <input matInput placeholder="Email" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">Email inválido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="input-field">
+        <input matInput type="password" placeholder="Senha" [formControl]="senha" required>
+        <mat-error *ngIf="senha.invalid">Senha inválida</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="login-button" (click)="login()">Login</button>
+
+    <button mat-button color="primary" class="register-button">Novo Cadastro</button>
+
+    <mat-error *ngIf="errorMessage" class="error-message">{{ errorMessage }}</mat-error>
+</div>

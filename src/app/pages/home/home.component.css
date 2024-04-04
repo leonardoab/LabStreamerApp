@@ -1,0 +1,60 @@
+.filter-container {
+    margin-bottom: 20px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.mat-table {
+    width: 100%;
+}
+
+.mat-row,
+.mat-header-row {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+.mat-cell,
+.mat-header-cell {
+    flex: 1;
+    padding: 12px;
+    text-align: left;
+}
+
+.mat-header-cell {
+    font-weight: bold;
+}
+
+.mat-no-data-row {
+    font-style: italic;
+    color: #888;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 20px;
+    /* Adiciona espaços laterais direito e esquerdo */
+    max-width: 1200px;
+    /* Ou qualquer largura desejada para a tabela */
+}
+
+.filter-container {
+    margin-bottom: 20px;
+    /* Adiciona um espaço entre o filtro e a tabela */
+}
+
+.table-container {
+    overflow-x: auto;
+    /* Adiciona barra de rolagem horizontal, se necessário */
+}
+
+.filter-container,
+.table-container {
+    margin-bottom: 20px;
+}
+
+.input-field {
+    width: 100%;
+}
