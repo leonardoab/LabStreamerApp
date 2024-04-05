@@ -12,8 +12,8 @@ export class MusicaService {
 
   constructor(private http: HttpClient) { }
 
-  public BuscarTodasMusicas(): Observable<Musica[]> {
-    return this.http.get<Musica[]>(`${this.url}/BuscaMusicasCompleto`);
+  public BuscarTodasMusicas(id: string): Observable<Musica[]> {
+    return this.http.get<Musica[]>(`${this.url}/BuscaMusicasCompleto?id=${id}`);
 
   }
 }

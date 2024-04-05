@@ -1,7 +1,7 @@
 <div class="login-container">
 
     <mat-form-field class="input-field">
-        <input matInput placeholder="Nome" required>
+        <input matInput placeholder="Nome" [formControl]="nome" required>
     </mat-form-field>
 
 
@@ -17,16 +17,18 @@
 
     <mat-form-field class="input-field">
         <mat-label>Planos</mat-label>
-        <mat-select>
-            @for (food of foods; track food) {
-            <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+        <mat-select [(ngModel)]="planoSelecionado">
+            @for (plano of planos; track plano) {
+            <mat-option [value]="plano.id">{{plano.nome}} - {{plano.valor}}</mat-option>
             }
         </mat-select>
     </mat-form-field>
 
 
 
-    <button mat-raised-button color="primary" class="login-button" (click)="login()">Cadastrar</button>
+
+
+    <button mat-raised-button color="primary" class="login-button" (click)="cadastrar()">Cadastrar</button>
 
 
 

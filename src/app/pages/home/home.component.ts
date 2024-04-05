@@ -7,6 +7,24 @@ import { MusicaService } from '../../services/musica.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import { ListaFavorita } from '../../model/listaFavorita';
+import { ListaFavoritaService } from '../../services/lista-favorita.service';
+
+
+
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatButtonModule } from '@angular/material/button';
+import { UsuarioService } from '../../services/usuario.service';
+import { Usuario, UsuarioCadastro } from '../../model/usuario';
+
+
+import { PlanoService } from '../../services/plano.service';
+import { Plano } from '../../model/plano';
+
+
+
+
 
 interface Food {
   value: string;
@@ -22,7 +40,7 @@ interface Food {
   styleUrl: './home.component.css',
   templateUrl: './home.component.html',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, CommonModule, MatSelectModule],
+  imports: [MatTableModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatSelectModule],
 })
 export class HomeComponent implements OnInit {
   displayedColumns: string[] = [
@@ -35,18 +53,17 @@ export class HomeComponent implements OnInit {
   ];
 
 
-  foods: Food[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
+  listas: ListaFavorita[] = [
+
   ];
 
+  idLista!: string;
 
 
 
   dataSource = new MatTableDataSource<Musica>([]);
 
-  constructor(private musicaService: MusicaService, private router: Router) {
+  constructor(private musicaService: MusicaService, private listaFavoritaService: ListaFavoritaService, private router: Router) {
     // Supondo que o JSON fornecido esteja armazenado em uma variável chamada jsonData
 
     // Definindo os dados na fonte de dados da tabela
@@ -54,15 +71,70 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.musicaService.BuscarTodasMusicas().subscribe(response => {
-      console.log(response);
-      this.dataSource.data = response;
-    });
+
+
+
+
+
+
+    const user = sessionStorage.getItem("user");
+
+    if (user !== null) {
+      this.listaFavoritaService.getListasFavoritasUsuario(user).subscribe(response => {
+        console.log(response);
+        this.listas = response;
+      });
+    } else {
+      console.error("O usuário não está definido no sessionStorage.");
+      // Ou adote outra abordagem apropriada para lidar com a falta do usuário.
+    }
+
+
+
+
+
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  public buscarMusicas() {
+
+
+    this.musicaService.BuscarTodasMusicas(this.idLista).subscribe(response => {
+      console.log(response);
+      this.dataSource.data = response;
+    });
+
+
+  }
+
+  public favoritar(item: Musica) {
+
+    if (item.estaFavorito == false) {
+      this.listaFavoritaService.favoritar(item.idMusica, this.idLista).subscribe(response => {
+        console.log(response);
+
+      });
+      item.estaFavorito = true;
+
+
+    } else {
+
+      this.listaFavoritaService.desfavoritar(item.idMusica, this.idLista).subscribe(response => {
+        console.log(response);
+
+      });
+
+      item.estaFavorito = false;
+
+
+    }
+
+
+
   }
 
 

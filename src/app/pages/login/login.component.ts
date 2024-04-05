@@ -26,6 +26,13 @@ export class LoginComponent {
 
   }
 
+  public novoCadastro() {
+
+
+    this.router.navigate(["/cadastro"]);
+
+  }
+
   public login() {
     if (this.email.invalid || this.senha.invalid) {
       return;
@@ -38,7 +45,7 @@ export class LoginComponent {
       {
         next: (response) => {
           this.usuario = response;
-          sessionStorage.setItem("user", JSON.stringify(this.usuario));
+          sessionStorage.setItem("user", this.usuario.id);
           this.router.navigate(["/home"]);
         },
         error: (e) => {

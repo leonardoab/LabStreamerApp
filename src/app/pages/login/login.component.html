@@ -11,7 +11,7 @@
 
     <button mat-raised-button color="primary" class="login-button" (click)="login()">Login</button>
 
-    <button mat-button color="primary" class="register-button">Novo Cadastro</button>
+    <button mat-button color="primary" class="register-button" (click)="novoCadastro()">Novo Cadastro</button>
 
     <mat-error *ngIf="errorMessage" class="error-message">{{ errorMessage }}</mat-error>
 </div>

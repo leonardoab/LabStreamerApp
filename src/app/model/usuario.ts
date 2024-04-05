@@ -1,5 +1,5 @@
 export interface Usuario {
-    id?: String;
+    id: string;
     nome?: String;
     email?: String;
     dtNascimento?: String;

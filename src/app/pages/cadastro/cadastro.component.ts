@@ -5,14 +5,15 @@ import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angu
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { UsuarioService } from '../../services/usuario.service';
-import { UsuarioCadastro } from '../../model/usuario';
+import { Usuario, UsuarioCadastro } from '../../model/usuario';
 import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
+import { PlanoService } from '../../services/plano.service';
+import { Plano } from '../../model/plano';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-interface Food {
-  value: string;
-  viewValue: string;
-}
+
+
 
 @Component({
   selector: 'app-cadastro',
@@ -24,32 +25,39 @@ interface Food {
 export class CadastroComponent {
   email = new FormControl('', [Validators.required, Validators.email]);
   senha = new FormControl('', [Validators.required]);
+  nome = new FormControl('', [Validators.required]);
   errorMessage = '';
-  usuario!: UsuarioCadastro;
+  usuario!: Usuario;
+  planoSelecionado!: string;
+  planos: Plano[] = [];
 
-  foods: Food[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
 
-  constructor(private usuarioService: UsuarioService, private router: Router) {
+
+  constructor(private planoService: PlanoService, private usuarioService: UsuarioService, private router: Router) {
 
   }
 
-  public login() {
-    if (this.email.invalid || this.senha.invalid) {
-      return;
-    }
+  ngOnInit(): void {
+    this.planoService.BuscarTodosPlanos().subscribe(response => {
+      console.log(response);
+      this.planos = response;
+    });
+  }
+
+
+  public cadastrar() {
 
     let emailValue = this.email.getRawValue() as String;
     let senhaValue = this.senha.getRawValue() as String;
+    let nomeValue = this.nome.getRawValue() as String;
 
-    this.usuarioService.autenticar(emailValue, senhaValue).subscribe(
+
+
+    this.usuarioService.cadastrar(nomeValue, senhaValue, emailValue, this.planoSelecionado).subscribe(
       {
         next: (response) => {
           this.usuario = response;
-          sessionStorage.setItem("user", JSON.stringify(this.usuario));
+          sessionStorage.setItem("user", this.usuario.id);
           this.router.navigate(["/home"]);
         },
         error: (e) => {
@@ -60,7 +68,11 @@ export class CadastroComponent {
       });
 
 
+
+
+
   }
+
 
 
 }
